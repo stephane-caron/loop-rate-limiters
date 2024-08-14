@@ -22,16 +22,16 @@ A similar ``AsyncRateLimiter`` class is available for [asynchronous code](https:
 
 ## Installation
 
-You can install the library straight from PyPI:
-
-```console
-pip install loop-rate-limiters
-```
-
-Or equivalently from Conda:
+### From conda-forge
 
 ```console
 conda install -c conda-forge loop-rate-limiters
+```
+
+### From PyPI
+
+```console
+pip install loop-rate-limiters
 ```
 
 ## Asynchronous I/O
