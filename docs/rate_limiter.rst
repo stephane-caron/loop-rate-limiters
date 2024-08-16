@@ -1,5 +1,3 @@
-.. _Supported solvers:
-
 ************
 Rate limiter
 ************
