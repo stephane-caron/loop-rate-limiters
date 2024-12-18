@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.1.0] - 2024-12-18
+
 ### Added
 
 - Support Python 3.12
@@ -80,7 +82,8 @@ All notable changes to this project will be documented in this file.
 
 - Loop rate limiter based on ``time.perf_counter``
 
-[unreleased]: https://github.com/stephane-caron/loop-rate-limiters/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/stephane-caron/loop-rate-limiters/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/stephane-caron/loop-rate-limiters/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/stephane-caron/loop-rate-limiters/compare/v0.6.1...v1.0.0
 [0.6.1]: https://github.com/stephane-caron/loop-rate-limiters/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/stephane-caron/loop-rate-limiters/compare/v0.5.0...v0.6.0
