@@ -6,7 +6,12 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- CICD: Update mamba action to `setup-micromamba`
 - Warn rather than raise an exception when asyncio loop is not running
+
+### Removed
+
+- End of support for Python 3.8
 
 ## [1.0.0] - 2024-02-08
 
