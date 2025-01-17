@@ -17,7 +17,6 @@ sys.path.insert(0, abspath(".."))
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.coverage",
-    "sphinx-mathjax-offline",
     "sphinx.ext.napoleon",  # before sphinx_autodoc_typehints
     "sphinx_autodoc_typehints",
     "sphinx_mdinclude",  # include Markdown
