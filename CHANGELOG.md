@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- CICD: Update checkout action to v4
 - CICD: Update mamba action to `setup-micromamba`
 - Warn rather than raise an exception when asyncio loop is not running
 
