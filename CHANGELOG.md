@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Report lateness with a positive duration
+
 ## [1.1.0] - 2024-12-18
 
 ### Added

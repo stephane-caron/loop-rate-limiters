@@ -145,7 +145,7 @@ class AsyncRateLimiter:
             logging.warning(
                 "%s is late by %f [ms]",
                 self.name,
-                round(1e3 * self.__slack, 1),
+                round(-1e3 * self.__slack, 1),
             )
         loop_time = self.__loop.time()
         self.__measured_period = loop_time - self.__last_loop_time
