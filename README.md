@@ -34,9 +34,9 @@ conda install -c conda-forge loop-rate-limiters
 pip install loop-rate-limiters
 ```
 
-## Asynchronous I/O
+## Usage
 
-The ``AsyncRateLimiter`` class provides a loop frequency limiter for [asyncio](https://docs.python.org/3/library/asyncio.html):
+While the example above is synchronous, this library also provides an ``AsyncRateLimiter`` class for [asyncio](https://docs.python.org/3/library/asyncio.html):
 
 ```python
 import asyncio
@@ -52,7 +52,7 @@ async def main():
 asyncio.run(main())
 ```
 
-This can be used if, for instance, there are several tasks executed in parallel at different frequencies.
+This can be used when there are several tasks executed in parallel at different frequencies.
 
 ## See also
 
