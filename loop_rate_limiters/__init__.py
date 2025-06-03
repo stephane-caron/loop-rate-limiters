@@ -6,7 +6,7 @@
 
 """Loop rate limiters."""
 
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 from .async_rate_limiter import AsyncRateLimiter
 from .rate_limiter import RateLimiter

@@ -95,6 +95,6 @@ class RateLimiter:
             logging.warning(
                 "%s is late by %f [ms]",
                 self.name,
-                round(1e3 * self.__slack, 1),
+                round(-1e3 * self.__slack, 1),
             )
         self.__next_tick = perf_counter() + self.__period
