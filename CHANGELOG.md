@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Reduce precision of lateness warnings by a reasonable amount
+
 ## [1.1.2] - 2025-06-03
 
 ### Fixed

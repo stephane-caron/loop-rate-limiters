@@ -93,7 +93,7 @@ class RateLimiter:
             sleep(self.__slack)
         elif self.__slack < -0.1 * self.period and self.warn:
             logging.warning(
-                "%s is late by %f [ms]",
+                "%s is late by %.1f [ms]",
                 self.name,
                 round(-1e3 * self.__slack, 1),
             )
