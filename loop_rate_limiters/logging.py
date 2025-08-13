@@ -2,40 +2,75 @@
 # -*- coding: utf-8 -*-
 #
 # SPDX-License-Identifier: Apache-2.0
+# Copyright 2022 Stéphane Caron
+# Copyright 2023 Inria
 
 """Custom logging configuration for loop rate limiters."""
 
 import logging
 
 
-class RateLimiterFormatter(logging.Formatter):
-    """Custom formatter for rate limiter messages with nice styling."""
+class SpdlogFormatter(logging.Formatter):
+    """
+    Custom logging formatter visually consistent with spdlog.
+    """
+
+    def __init__(self):
+        """
+        Initialize log formatter.
+        """
+        BOLD_RED: str = "\033[31;1m"
+        BOLD_WHITE: str = "\033[37;1m"
+        BOLD_YELLOW: str = "\033[33;1m"
+        CRITICAL_RED: str = "\033[41m"
+        GREEN: str = "\033[32m"
+        RESET: str = "\033[0m"
+
+        self.level_format: dict = {
+            logging.CRITICAL: f"[{CRITICAL_RED}{BOLD_WHITE}critical{RESET}]",
+            logging.DEBUG: "[debug]",
+            logging.ERROR: f"[{BOLD_RED}error{RESET}]",
+            logging.INFO: f"[{GREEN}info{RESET}]",
+            logging.WARNING: f"[{BOLD_YELLOW}warning{RESET}]",
+        }
 
     def format(self, record):
-        if "is late by" in record.getMessage():
-            # Extract rate limiter name and lateness from the message
-            parts = record.getMessage().split(" is late by ")
-            if len(parts) == 2:
-                limiter_name = parts[0]
-                lateness = parts[1]
-                return f"⚠️  {limiter_name} running {lateness} behind schedule"
-        return super().format(record)
+        r"""
+        Format a given record.
+
+        \param record Record to format.
+        """
+        custom_format = (
+            "[%(name)s] [%(asctime)s] "
+            + self.level_format.get(record.levelno, "[???]")
+            + " %(message)s (%(filename)s:%(lineno)d)"
+        )
+        formatter = logging.Formatter(custom_format, datefmt="%H:%M:%S")
+        return formatter.format(record)
 
 
-def setup_logging():
-    """Configure logging with the custom formatter for rate limiters only."""
-    logger = logging.getLogger("loop_rate_limiters")
+# Main logger instance for the loop rate limiters library
+logger = logging.getLogger("loop_rate_limiters")
+logger.setLevel(logging.INFO)
 
-    if not logger.handlers:
-        handler = logging.StreamHandler()
-        handler.setFormatter(RateLimiterFormatter())
-        logger.addHandler(handler)
-        logger.setLevel(logging.WARNING)
-        # Don't propagate to root logger to avoid duplicate messages
-        logger.propagate = False
+# Stream handler for console output with custom formatting
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
+handler.setFormatter(SpdlogFormatter())
+logger.addHandler(handler)
 
-    return logger
+# Prevent propagation to root logger to avoid duplicate messages
+logger.propagate = False
 
 
-# Library-specific logger
-logger = setup_logging()
+def disable_warnings() -> None:
+    """
+    Disable all warnings from the loop_rate_limiters module.
+    """
+    logger.setLevel(logging.ERROR)
+
+
+__all__ = [
+    "disable_warnings",
+    "logger",
+]
