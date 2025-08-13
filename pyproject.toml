@@ -78,14 +78,17 @@ platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
 python = ">=3.8"
 
 [tool.pixi.feature.dev.dependencies]
+coverage = ">=5.5"
 mypy = ">=0.812"
 pylint = ">=2.8.2"
+pytest = ">=6.0"
+pytest-asyncio = "*"
+pytest-cov = "*"
 ruff = ">=0.4.3"
-coverage = ">=5.5"
 
 [tool.pixi.feature.docs.dependencies]
-pip = ">=21.3.1"
 furo = ">=2023.8.17"
+pip = ">=21.3.1"
 sphinx = ">=7.2.2"
 sphinx-autodoc-typehints = "*"
 sphinx-favicon = "*"
@@ -93,17 +96,13 @@ sphinx-mdinclude = "*"
 sphinx_rtd_theme = "*"
 
 [tool.pixi.feature.dev.tasks]
-lint-mypy = "mypy loop_rate_limiters --ignore-missing-imports"
-lint-pylint = "pylint loop_rate_limiters --exit-zero --rcfile=tox.ini"
-lint-ruff = "ruff check loop_rate_limiters"
-lint-format = "ruff format --check loop_rate_limiters"
+coverage = "pytest --cov=loop_rate_limiters --cov-report=term-missing"
 lint = { depends-on = ["lint-mypy", "lint-pylint", "lint-ruff", "lint-format"] }
-test = "python -m unittest discover"
-coverage = { cmd = [
-    "coverage", "erase",
-    "&&", "coverage", "run", "-m", "unittest", "discover",
-    "&&", "coverage", "report", "--include=loop_rate_limiters/*"
-] }
+lint-format = "ruff format --check loop_rate_limiters"
+lint-mypy = "mypy loop_rate_limiters --ignore-missing-imports"
+lint-pylint = "pylint loop_rate_limiters --exit-zero"
+lint-ruff = "ruff check loop_rate_limiters"
+test = "pytest"
 
 [tool.pixi.feature.docs.tasks]
 docs = "sphinx-build docs _build -W"
