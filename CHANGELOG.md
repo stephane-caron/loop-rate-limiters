@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Add `disable_warnings` utility function
 - Custom library-specific logger for warnings
 
 ### Changed
