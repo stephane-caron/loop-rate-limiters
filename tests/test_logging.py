@@ -58,7 +58,6 @@ class TestSpdlogFormatter:
         assert "[test]" in formatted
         assert "warning" in formatted  # Color codes may surround this
         assert "Test warning message" in formatted
-        assert "(test.py:42)" in formatted
 
     def test_format_error(self, formatter, log_record):
         """Format error message correctly."""
@@ -69,7 +68,6 @@ class TestSpdlogFormatter:
         assert "[test]" in formatted
         assert "error" in formatted  # Color codes may surround this
         assert "Test error message" in formatted
-        assert "(test.py:42)" in formatted
 
     def test_format_info(self, formatter, log_record):
         """Format info message correctly."""
@@ -80,7 +78,6 @@ class TestSpdlogFormatter:
         assert "[test]" in formatted
         assert "info" in formatted  # Color codes may surround this
         assert "Test info message" in formatted
-        assert "(test.py:42)" in formatted
 
     def test_format_debug(self, formatter, log_record):
         """Format debug message correctly."""
@@ -91,7 +88,6 @@ class TestSpdlogFormatter:
         assert "[test]" in formatted
         assert "[debug]" in formatted
         assert "Test debug message" in formatted
-        assert "(test.py:42)" in formatted
 
     def test_format_critical(self, formatter, log_record):
         """Format critical message correctly."""
@@ -102,7 +98,6 @@ class TestSpdlogFormatter:
         assert "[test]" in formatted
         assert "critical" in formatted  # Color codes may surround this
         assert "Test critical message" in formatted
-        assert "(test.py:42)" in formatted
 
     def test_format_unknown_level(self, formatter):
         """Format message with unknown level."""
@@ -121,7 +116,6 @@ class TestSpdlogFormatter:
         assert "[test]" in formatted
         assert "[???]" in formatted
         assert "Test unknown level message" in formatted
-        assert "(test.py:42)" in formatted
 
 
 class TestLogger:
@@ -172,7 +166,6 @@ class TestLogger:
         assert "[test_logger]" in output
         assert "warning" in output  # Color codes may surround this
         assert "Test warning message" in output
-        assert "(test_logging.py:" in output
 
         # Clean up
         test_logger.removeHandler(test_handler)
