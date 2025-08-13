@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - CICD: Switch from tox to Pixi
+- CICD: Switch unit tests to PyTest
 - Reduce precision of lateness warnings by a reasonable amount
 
 ### Fixed
