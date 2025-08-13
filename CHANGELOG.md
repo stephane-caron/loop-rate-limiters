@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Custom library-specific logger for warnings
+
 ### Changed
 
 - Reduce precision of lateness warnings by a reasonable amount
