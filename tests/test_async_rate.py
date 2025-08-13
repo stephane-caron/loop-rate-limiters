@@ -9,52 +9,64 @@ Test asyncio rate limiter.
 """
 
 import asyncio
-import unittest
+
+import pytest
+import pytest_asyncio
 
 from loop_rate_limiters import AsyncRateLimiter
 
 
-class TestAsyncRateLimiter(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        """
-        Initialize a rate with 1 ms period.
-        """
-        self.rate = AsyncRateLimiter(1000.0)
+@pytest_asyncio.fixture
+async def rate():
+    """
+    Initialize a rate with 1 ms period.
+    """
+    return AsyncRateLimiter(1000.0)
 
-    async def test_init(self):
-        """
-        Constructor completed.
-        """
-        self.assertIsNotNone(self.rate)
 
-    def test_period_dt(self):
-        """Check that period and dt are the same."""
-        self.assertAlmostEqual(self.rate.period, self.rate.dt)
+@pytest.mark.asyncio
+async def test_init(rate):
+    """
+    Constructor completed.
+    """
+    assert rate is not None
 
-    async def test_remaining(self):
-        """
-        After one period has expired, the "remaining" time becomes negative.
-        """
-        await self.rate.sleep()
-        await asyncio.sleep(self.rate.period)
-        remaining = await self.rate.remaining()
-        self.assertLess(remaining, 0.0)
 
-    async def test_slack(self):
-        """
-        Slack becomes negative as well after one period has expired.
+def test_period_dt():
+    """Check that period and dt are the same."""
+    rate = AsyncRateLimiter(1000.0)
+    assert rate.period == pytest.approx(rate.dt)
 
-        Notes:
-            We wait slightly less than a period because Windows (windows-latest
-            in the CI) has imprecise timers.
-        """
-        await self.rate.sleep()
-        await asyncio.sleep(self.rate.period * 2.0)  # sleep more than rate
-        await self.rate.sleep()  # computes slack of previous period
-        self.assertLess(self.rate.slack, 0.0)
 
-    async def test_sleep(self):
-        await self.rate.sleep()
-        await self.rate.sleep()  # presumably slack > 0.0
-        await asyncio.sleep(self.rate.period)
-        await self.rate.sleep()  # now for sure slack < 0.0
+@pytest.mark.asyncio
+async def test_remaining(rate):
+    """
+    After one period has expired, the "remaining" time becomes negative.
+    """
+    await rate.sleep()
+    await asyncio.sleep(rate.period)
+    remaining = await rate.remaining()
+    assert remaining < 0.0
+
+
+@pytest.mark.asyncio
+async def test_slack(rate):
+    """
+    Slack becomes negative as well after one period has expired.
+
+    Notes:
+        We wait slightly less than a period because Windows (windows-latest
+        in the CI) has imprecise timers.
+    """
+    await rate.sleep()
+    await asyncio.sleep(rate.period * 2.0)  # sleep more than rate
+    await rate.sleep()  # computes slack of previous period
+    assert rate.slack < 0.0
+
+
+@pytest.mark.asyncio
+async def test_sleep(rate):
+    await rate.sleep()
+    await rate.sleep()  # presumably slack > 0.0
+    await asyncio.sleep(rate.period)
+    await rate.sleep()  # now for sure slack < 0.0
