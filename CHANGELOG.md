@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 - CICD: Switch from tox to Pixi
 - Reduce precision of lateness warnings by a reasonable amount
 
+### Fixed
+
+- Fix bug when the loop is not running at AsyncRateLimiter initialization
+
 ## [1.1.2] - 2025-06-03
 
 ### Fixed

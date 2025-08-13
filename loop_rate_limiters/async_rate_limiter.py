@@ -67,7 +67,7 @@ class AsyncRateLimiter:
         if not loop.is_running() and warn:
             logger.warning(
                 "asyncio loop does not seem to be running for %s",
-                self.name,
+                name,
             )
         self.__last_loop_time = loop.time()
         self.__loop = loop
