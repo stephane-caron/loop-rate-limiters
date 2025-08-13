@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- CICD: Switch from tox to Pixi
 - Reduce precision of lateness warnings by a reasonable amount
 
 ## [1.1.2] - 2025-06-03
