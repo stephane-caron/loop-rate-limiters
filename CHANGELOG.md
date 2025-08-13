@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- logging: Shorten warnings by omitting source file and line number
+- nit: Remove brackets around SI units
+
 ## [1.2.0] - 2025-08-13
 
 ### Added

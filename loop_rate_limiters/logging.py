@@ -39,7 +39,7 @@ class SpdlogFormatter(logging.Formatter):
         custom_format = (
             "[%(name)s] [%(asctime)s] "
             + self.level_format.get(record.levelno, "[???]")
-            + " %(message)s (%(filename)s:%(lineno)d)"
+            + " %(message)s"
         )
         formatter = logging.Formatter(custom_format, datefmt="%H:%M:%S")
         return formatter.format(record)
