@@ -9,9 +9,11 @@
 __version__ = "1.1.2"
 
 from .async_rate_limiter import AsyncRateLimiter
+from .logging import disable_warnings
 from .rate_limiter import RateLimiter
 
 __all__ = [
     "AsyncRateLimiter",
     "RateLimiter",
+    "disable_warnings",
 ]
