@@ -11,14 +11,10 @@ import logging
 
 
 class SpdlogFormatter(logging.Formatter):
-    """
-    Custom logging formatter visually consistent with spdlog.
-    """
+    """Custom logging formatter visually consistent with spdlog."""
 
     def __init__(self):
-        """
-        Initialize log formatter.
-        """
+        """Initialize log formatter."""
         BOLD_RED: str = "\033[31;1m"
         BOLD_WHITE: str = "\033[37;1m"
         BOLD_YELLOW: str = "\033[33;1m"
@@ -35,10 +31,10 @@ class SpdlogFormatter(logging.Formatter):
         }
 
     def format(self, record):
-        r"""
-        Format a given record.
+        """Format a given record.
 
-        \param record Record to format.
+        Args:
+            record: Record to format.
         """
         custom_format = (
             "[%(name)s] [%(asctime)s] "
@@ -64,9 +60,7 @@ logger.propagate = False
 
 
 def disable_warnings() -> None:
-    """
-    Disable all warnings from the loop_rate_limiters module.
-    """
+    """Disable all warnings from the loop_rate_limiters module."""
     logger.setLevel(logging.ERROR)
 
 
