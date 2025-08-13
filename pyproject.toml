@@ -69,3 +69,32 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+
+[tool.pixi.dependencies]
+python = ">=3.8"
+
+[tool.pixi.feature.dev.dependencies]
+mypy = ">=0.812"
+pylint = ">=2.8.2"
+ruff = ">=0.4.3"
+coverage = ">=5.5"
+
+[tool.pixi.feature.dev.tasks]
+lint-mypy = "mypy loop_rate_limiters --ignore-missing-imports"
+lint-pylint = "pylint loop_rate_limiters --exit-zero --rcfile=tox.ini"
+lint-ruff = "ruff check loop_rate_limiters"
+lint-format = "ruff format --check loop_rate_limiters"
+lint = { depends-on = ["lint-mypy", "lint-pylint", "lint-ruff", "lint-format"] }
+test = "python -m unittest discover"
+coverage = { cmd = [
+    "coverage", "erase",
+    "&&", "coverage", "run", "-m", "unittest", "discover",
+    "&&", "coverage", "report", "--include=loop_rate_limiters/*"
+] }
+
+[tool.pixi.environments]
+dev = ["dev"]
