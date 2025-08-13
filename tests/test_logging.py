@@ -8,8 +8,9 @@ Test logging functionality.
 """
 
 import logging
-import unittest
 from io import StringIO
+
+import pytest
 
 from loop_rate_limiters.logging import (
     SpdlogFormatter,
@@ -18,112 +19,92 @@ from loop_rate_limiters.logging import (
 )
 
 
-class TestSpdlogFormatter(unittest.TestCase):
-    def setUp(self):
-        """Set up formatter for testing."""
-        self.formatter = SpdlogFormatter()
+@pytest.fixture
+def formatter():
+    """Set up formatter for testing."""
+    return SpdlogFormatter()
 
-    def test_init(self):
+
+@pytest.fixture
+def log_record():
+    """Create a basic log record for testing."""
+
+    def _make_record(level, msg):
+        return logging.LogRecord(
+            name="test",
+            level=level,
+            pathname="test.py",
+            lineno=42,
+            msg=msg,
+            args=(),
+            exc_info=None,
+        )
+
+    return _make_record
+
+
+class TestSpdlogFormatter:
+    def test_init(self, formatter):
         """Constructor completed."""
-        self.assertIsNotNone(self.formatter)
-        self.assertIsInstance(self.formatter.level_format, dict)
+        assert formatter is not None
+        assert isinstance(formatter.level_format, dict)
 
-    def test_format_warning(self):
+    def test_format_warning(self, formatter, log_record):
         """Format warning message correctly."""
-        record = logging.LogRecord(
-            name="test",
-            level=logging.WARNING,
-            pathname="test.py",
-            lineno=42,
-            msg="Test warning message",
-            args=(),
-            exc_info=None,
-        )
-        formatted = self.formatter.format(record)
+        record = log_record(logging.WARNING, "Test warning message")
+        formatted = formatter.format(record)
 
         # Check that formatted string contains expected components
-        self.assertIn("[test]", formatted)
-        self.assertIn("warning", formatted)  # Color codes may surround this
-        self.assertIn("Test warning message", formatted)
-        self.assertIn("(test.py:42)", formatted)
+        assert "[test]" in formatted
+        assert "warning" in formatted  # Color codes may surround this
+        assert "Test warning message" in formatted
+        assert "(test.py:42)" in formatted
 
-    def test_format_error(self):
+    def test_format_error(self, formatter, log_record):
         """Format error message correctly."""
-        record = logging.LogRecord(
-            name="test",
-            level=logging.ERROR,
-            pathname="test.py",
-            lineno=42,
-            msg="Test error message",
-            args=(),
-            exc_info=None,
-        )
-        formatted = self.formatter.format(record)
+        record = log_record(logging.ERROR, "Test error message")
+        formatted = formatter.format(record)
 
         # Check that formatted string contains expected components
-        self.assertIn("[test]", formatted)
-        self.assertIn("error", formatted)  # Color codes may surround this
-        self.assertIn("Test error message", formatted)
-        self.assertIn("(test.py:42)", formatted)
+        assert "[test]" in formatted
+        assert "error" in formatted  # Color codes may surround this
+        assert "Test error message" in formatted
+        assert "(test.py:42)" in formatted
 
-    def test_format_info(self):
+    def test_format_info(self, formatter, log_record):
         """Format info message correctly."""
-        record = logging.LogRecord(
-            name="test",
-            level=logging.INFO,
-            pathname="test.py",
-            lineno=42,
-            msg="Test info message",
-            args=(),
-            exc_info=None,
-        )
-        formatted = self.formatter.format(record)
+        record = log_record(logging.INFO, "Test info message")
+        formatted = formatter.format(record)
 
         # Check that formatted string contains expected components
-        self.assertIn("[test]", formatted)
-        self.assertIn("info", formatted)  # Color codes may surround this
-        self.assertIn("Test info message", formatted)
-        self.assertIn("(test.py:42)", formatted)
+        assert "[test]" in formatted
+        assert "info" in formatted  # Color codes may surround this
+        assert "Test info message" in formatted
+        assert "(test.py:42)" in formatted
 
-    def test_format_debug(self):
+    def test_format_debug(self, formatter, log_record):
         """Format debug message correctly."""
-        record = logging.LogRecord(
-            name="test",
-            level=logging.DEBUG,
-            pathname="test.py",
-            lineno=42,
-            msg="Test debug message",
-            args=(),
-            exc_info=None,
-        )
-        formatted = self.formatter.format(record)
+        record = log_record(logging.DEBUG, "Test debug message")
+        formatted = formatter.format(record)
 
         # Check that formatted string contains expected components
-        self.assertIn("[test]", formatted)
-        self.assertIn("[debug]", formatted)
-        self.assertIn("Test debug message", formatted)
-        self.assertIn("(test.py:42)", formatted)
+        assert "[test]" in formatted
+        assert "[debug]" in formatted
+        assert "Test debug message" in formatted
+        assert "(test.py:42)" in formatted
 
-    def test_format_critical(self):
+    def test_format_critical(self, formatter, log_record):
         """Format critical message correctly."""
-        record = logging.LogRecord(
-            name="test",
-            level=logging.CRITICAL,
-            pathname="test.py",
-            lineno=42,
-            msg="Test critical message",
-            args=(),
-            exc_info=None,
-        )
-        formatted = self.formatter.format(record)
+        record = log_record(logging.CRITICAL, "Test critical message")
+        formatted = formatter.format(record)
 
         # Check that formatted string contains expected components
-        self.assertIn("[test]", formatted)
-        self.assertIn("critical", formatted)  # Color codes may surround this
-        self.assertIn("Test critical message", formatted)
-        self.assertIn("(test.py:42)", formatted)
+        assert "[test]" in formatted
+        assert "critical" in formatted  # Color codes may surround this
+        assert "Test critical message" in formatted
+        assert "(test.py:42)" in formatted
 
-    def test_format_unknown_level(self):
+    def test_format_unknown_level(self, formatter):
         """Format message with unknown level."""
         record = logging.LogRecord(
             name="test",
@@ -134,39 +115,39 @@ class TestSpdlogFormatter(unittest.TestCase):
             args=(),
             exc_info=None,
         )
-        formatted = self.formatter.format(record)
+        formatted = formatter.format(record)
 
         # Check that formatted string contains expected components
-        self.assertIn("[test]", formatted)
-        self.assertIn("[???]", formatted)
-        self.assertIn("Test unknown level message", formatted)
-        self.assertIn("(test.py:42)", formatted)
+        assert "[test]" in formatted
+        assert "[???]" in formatted
+        assert "Test unknown level message" in formatted
+        assert "(test.py:42)" in formatted
 
 
-class TestLogger(unittest.TestCase):
+class TestLogger:
     def test_logger_exists(self):
         """Logger is properly initialized."""
-        self.assertIsNotNone(logger)
-        self.assertEqual(logger.name, "loop_rate_limiters")
+        assert logger is not None
+        assert logger.name == "loop_rate_limiters"
 
     def test_logger_has_handler(self):
         """Logger has a handler configured."""
-        self.assertTrue(len(logger.handlers) > 0)
+        assert len(logger.handlers) > 0
 
     def test_logger_propagate_disabled(self):
         """Logger propagation is disabled."""
-        self.assertFalse(logger.propagate)
+        assert logger.propagate is False
 
     def test_logger_formatter_type(self):
         """Logger uses SpdlogFormatter."""
         handler = logger.handlers[0]
-        self.assertIsInstance(handler.formatter, SpdlogFormatter)
+        assert isinstance(handler.formatter, SpdlogFormatter)
 
     def test_disable_warnings(self):
         """disable_warnings function works correctly."""
         original_level = logger.level
         disable_warnings()
-        self.assertEqual(logger.level, logging.ERROR)
+        assert logger.level == logging.ERROR
 
         # Restore original level
         logger.setLevel(original_level)
@@ -188,14 +169,10 @@ class TestLogger(unittest.TestCase):
         output = stream.getvalue()
 
         # Check output format (accounting for ANSI color codes)
-        self.assertIn("[test_logger]", output)
-        self.assertIn("warning", output)  # Color codes may surround this
-        self.assertIn("Test warning message", output)
-        self.assertIn("(test_logging.py:", output)
+        assert "[test_logger]" in output
+        assert "warning" in output  # Color codes may surround this
+        assert "Test warning message" in output
+        assert "(test_logging.py:" in output
 
         # Clean up
         test_logger.removeHandler(test_handler)
-
-
-if __name__ == "__main__":
-    unittest.main()
