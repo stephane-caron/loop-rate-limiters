@@ -83,6 +83,15 @@ pylint = ">=2.8.2"
 ruff = ">=0.4.3"
 coverage = ">=5.5"
 
+[tool.pixi.feature.docs.dependencies]
+pip = ">=21.3.1"
+furo = ">=2023.8.17"
+sphinx = ">=7.2.2"
+sphinx-autodoc-typehints = "*"
+sphinx-favicon = "*"
+sphinx-mdinclude = "*"
+sphinx_rtd_theme = "*"
+
 [tool.pixi.feature.dev.tasks]
 lint-mypy = "mypy loop_rate_limiters --ignore-missing-imports"
 lint-pylint = "pylint loop_rate_limiters --exit-zero --rcfile=tox.ini"
@@ -96,5 +105,9 @@ coverage = { cmd = [
     "&&", "coverage", "report", "--include=loop_rate_limiters/*"
 ] }
 
+[tool.pixi.feature.docs.tasks]
+docs = "sphinx-build docs _build -W"
+
 [tool.pixi.environments]
 dev = ["dev"]
+docs = ["docs"]
