@@ -15,7 +15,8 @@ duration.
 """
 
 import asyncio
-import logging
+
+from .logging import logger
 
 
 class AsyncRateLimiter:
@@ -64,7 +65,7 @@ class AsyncRateLimiter:
         loop = asyncio.get_event_loop()
         period = 1.0 / frequency
         if not loop.is_running() and warn:
-            logging.warning(
+            logger.warning(
                 "asyncio loop does not seem to be running for %s",
                 self.name,
             )
@@ -142,7 +143,7 @@ class AsyncRateLimiter:
                 if self.__loop.time() < block_time:
                     await asyncio.sleep(1e-5)  # non-zero sleep duration
         elif self.__slack < -0.1 * self.__period and self.warn:
-            logging.warning(
+            logger.warning(
                 "%s is late by %.1f [ms]",
                 self.name,
                 round(-1e3 * self.__slack, 1),
